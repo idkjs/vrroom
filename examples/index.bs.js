@@ -4,14 +4,14 @@
 var React = require("react");
 var Vrroom = require("../src/Vrroom.bs.js");
 var ControlIf = require("./ControlIf.bs.js");
-var Fragments = require("./Fragments.bs.js");
 var ControlMap = require("./ControlMap.bs.js");
 var ReactDOMRe = require("reason-react/src/legacy/ReactDOMRe.bs.js");
+var VroomHelpers = require("./VroomHelpers.bs.js");
 var ControlIfSome = require("./ControlIfSome.bs.js");
 var ControlMapList = require("./ControlMapList.bs.js");
 
 function Index$Page(Props) {
-  return React.createElement("div", undefined, React.createElement("h1", undefined, Vrroom.text("Fragments")), React.createElement(Fragments.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlMap")), React.createElement(ControlMap.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlMapList")), React.createElement(ControlMapList.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlIf")), React.createElement(ControlIf.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlIfSome")), React.createElement(ControlIfSome.make, {}));
+  return React.createElement("div", undefined, React.createElement("h1", undefined, Vrroom.text("VroomHelpers")), React.createElement(VroomHelpers.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlMap")), React.createElement(ControlMap.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlMapList")), React.createElement(ControlMapList.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlIf")), React.createElement(ControlIf.make, {}), React.createElement("h1", undefined, Vrroom.text("ControlIfSome")), React.createElement(ControlIfSome.make, {}));
 }
 
 var Page = {

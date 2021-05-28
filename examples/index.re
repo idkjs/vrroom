@@ -4,8 +4,8 @@ module Page = {
   [@react.component]
   let make = () => {
     <div>
-      <h1> {"Fragments" |> text} </h1>
-      <Fragments />
+      <h1> {"VroomHelpers" |> text} </h1>
+      <VroomHelpers />
       <h1> {"ControlMap" |> text} </h1>
       <ControlMap />
       <h1> {"ControlMapList" |> text} </h1>
