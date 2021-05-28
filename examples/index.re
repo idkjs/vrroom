@@ -1,20 +1,21 @@
 open Vrroom;
 
 module Page = {
-  let instance = ReasonReact.statelessComponent("Page");
-  let make = (_:childless) => {
-    ...instance,
-
-    render: _self =>
-      <div>
-        <Pure />
-        <Fragment />
-        <ControlMap />
-        <ControlMapList />
-        <ControlIf />
-        <ControlIfSome />
-      </div>
-  }
+  [@react.component]
+  let make = () => {
+    <div>
+      <h1> {"Fragments" |> text} </h1>
+      <Fragments />
+      <h1> {"ControlMap" |> text} </h1>
+      <ControlMap />
+      <h1> {"ControlMapList" |> text} </h1>
+      <ControlMapList />
+      <h1> {"ControlIf" |> text} </h1>
+      <ControlIf />
+      <h1> {"ControlIfSome" |> text} </h1>
+      <ControlIfSome />
+    </div>;
+  };
 };
 
 ReactDOMRe.renderToElementWithId(<Page />, "index");
