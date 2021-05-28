@@ -1,7 +1,6 @@
 type nothing;
 
 module Helpers = {
-
   module Text = {
     let string = React.string;
     let int = n => n |> string_of_int |> string;

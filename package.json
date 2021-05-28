@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "A collection of mostly experimental tools and utilities for effective ReasonReact development",
   "scripts": {
-    "format": "bsrefmt --in-place **/*.{re,rei}",
+    "format": "bsrefmt --in-place **/*.re",
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
