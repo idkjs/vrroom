@@ -1,6 +1,16 @@
 type nothing;
 
 module Helpers = {
+  // leaving this here for now. Doesnt seem like it works for react-jsx3 ppx
+  //   #### type childless = array(nothing)
+
+  // Used to indicate and enforce a childless component by making it impossible to add children without circumventing the type system, since `nothing` is an abstract type with no way to construct a value.
+
+  // Example:
+  // ```reason
+  // let make = (_:childless) => ...
+
+  type childless = array(nothing);
   module Text = {
     let string = React.string;
     let int = n => n |> string_of_int |> string;
