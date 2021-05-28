@@ -1,109 +1,75 @@
 type nothing;
 
 module Helpers = {
-  type childless = array(nothing);
+  // leaving this here for now. Doesnt seem like it works for react-jsx3 ppx
+  //   #### type childless = array(nothing)
 
+  // Used to indicate and enforce a childless component by making it impossible to add children without circumventing the type system, since `nothing` is an abstract type with no way to construct a value.
+
+  // Example:
+  // ```reason
+  // let make = (_:childless) => ...
+
+  type childless = array(nothing);
   module Text = {
-    let string  = ReasonReact.string;
-    let int     = n => n |> string_of_int   |> string;
-    let float   = f => f |> string_of_float |> string;
-    let any     = v => v |> Js.String.make  |> string;
+    let string = React.string;
+    let int = n => n |> string_of_int |> string;
+    let float = f => f |> Js.Float.toString |> string;
+    let any = v => v |> Js.String.make |> string;
   };
 
   let text = Text.string;
-  let nothing = ReasonReact.null;
-  let nbsp = [%raw {|'\u00a0'|}];
-
-  [@deprecated "deprecated in favor of [nothing]"]
-  let null = ReasonReact.null;
-
+  let nothing = React.null;
+  let nbsp = {js|'\\u00a0'|js};
   module ClassName = {
     let join = items =>
-      items |> List.filter((!==)(""))
-            |> String.concat(" ");
-    
-    let if_   = (cond, cls) =>
-      cond ? cls : "";
+      items |> List.filter((!==)("")) |> String.concat(" ");
+
+    let if_ = (cond, cls) => cond ? cls : "";
 
     let fromOption =
-      fun | Some(cls) => cls
-          | None      => ""
+      fun
+      | Some(cls) => cls
+      | None => "";
   };
 };
 
 include Helpers;
 
-let pure = make => {
-  let instance = ReasonReact.statelessComponent("Pure");
-  make((element, _:childless) => {
-    ...instance,
-    render: _self => element
-  });
-};
-
-module Fragment = {
-  [@bs.module "react"] external reactClass : ReasonReact.reactClass = "Fragment";
-  let make = children =>
-    ReasonReact.wrapJsForReason(~reactClass, ~props=Js.Obj.empty(), children);
-};
-
 module Control = {
   module Map = {
-    let component = ReasonReact.statelessComponent("Control.Map");
-    let make = (~items: array('a),
-                ~empty: ReasonReact.reactElement=nothing,
-                render: 'a => ReasonReact.reactElement) => {
-      ...component,
-
-      render: _self =>
-        <Fragment>
-          {
-            switch items {
-            | [||] => empty
-            | _    => items |> Array.map(render)
-                            |> ReasonReact.array
-            }
-          }
-        </Fragment>
+    [@react.component]
+    let make = (~items: array('a), ~empty: React.element=nothing, ~children) => {
+      <React.Fragment>
+        {switch (items) {
+         | [||] => empty
+         | _ => items |> Array.map(children) |> React.array
+         }}
+      </React.Fragment>;
     };
   };
 
   module MapList = {
-    let component = ReasonReact.statelessComponent("Control.MapList");
-    let make = (~items: list('a),
-                ~empty: ReasonReact.reactElement=nothing,
-                render: 'a => ReasonReact.reactElement) => {
-      ...component,
-
-      render: _self =>
-      <Map items=(items |> Array.of_list) empty>
-        ...render
-      </Map>
+    [@react.component]
+    let make = (~items: list('a), ~empty: React.element=nothing, ~children) => {
+      <Map items={items |> Array.of_list} empty> children </Map>;
     };
   };
 
   module If = {
-    let component = ReasonReact.statelessComponent("Control.If");
-    let make = (~cond: bool,
-                render: unit => ReasonReact.reactElement) => {
-      ...component,
-
-      render: _self =>
-        cond ? render() : nothing
+    [@react.component]
+    let make = (~cond: bool, ~children: React.element) => {
+      cond ? children : nothing;
     };
   };
 
   module IfSome = {
-    let component = ReasonReact.statelessComponent("Control.IfSome");
-    let make = (~option: option('a),
-                render: 'a => ReasonReact.reactElement) => {
-      ...component,
-
-      render: _self =>
-        switch option {
-        | Some(value) => render(value)
-        | None        => nothing
-        }
+    [@react.component]
+    let make = (~option: option('a), ~children) => {
+      switch (option) {
+      | Some(value) => children(value)
+      | None => nothing
+      };
     };
   };
 };

@@ -2,24 +2,17 @@ open Vrroom;
 
 let maybeError = Some("oops!");
 
-let instance = ReasonReact.statelessComponent("Control.IfSome example");
-let make = (_:childless) => {
-  ...instance,
-  render: _self =>
-    <div>
-
-      /* Before */
-      {
-        switch maybeError {
-        | Some(error) => ReasonReact.string(error)
-        | None        => ReasonReact.null
-        }
-      }
-
+[@react.component]
+let make = () => {
+  <div>
+    /* Before */
+      {switch (maybeError) {
+       | Some(error) => React.string(error)
+       | None => React.null
+       }}
       /* After */
       <Control.IfSome option=maybeError>
-        ...(error => error |> text)
+        ...{error => error |> text}
       </Control.IfSome>
-
-    </div>
+    </div>;
 };

@@ -2,25 +2,16 @@ open Vrroom;
 
 let showHello = true;
 
-let instance = ReasonReact.statelessComponent("Control.If example");
-let make = (_:childless) => {
-  ...instance,
-  render: _self =>
-    <div>
-
+[@react.component]
+let make = () => {
+  <div>
       /* Before */
-      {
-        if (showHello) {
-          ReasonReact.string("Hello")
-        } else {
-          ReasonReact.null
-        }
-      }
-
+      {if (showHello) {
+         React.string("Hello");
+       } else {
+         React.null;
+       }}
       /* After */
-      <Control.If cond=showHello>
-          ...(() => "Hello" |> text)
-      </Control.If>
-
-    </div>
+      <Control.If cond=showHello> {"Hello" |> text} </Control.If>
+    </div>;
 };

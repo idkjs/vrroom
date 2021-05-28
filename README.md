@@ -1,10 +1,10 @@
-# vRRoom - Turbo-charged ReasonReact!
+# vRRoom - Turbo-charged Reason & Rescript with React!
 
-A collection of mostly experimental tools and utilities for effective ReasonReact development.
+A collection of mostly experimental tools and utilities for effective React development.
 
 ## Installation
 
-Run `npm install --save glennsl/vrroom` and add `vrroom` to `bs-dependencies` in `bsconfig.json`. 
+Run `npm install --save glennsl/vrroom` and add `vrroom` to `bs-dependencies` in `bsconfig.json`.
 
 ## Usage
 
@@ -19,10 +19,10 @@ top of the module. Otherwise, to avoid polluting the namespace, using `module V 
 {
   switch noItems {
   | [||] => <Item label="." />
-  | items => 
+  | items =>
     items |> Array.map(name => <Item label=name />)
-          |> ReasonReact.array
-  }  
+          |> React.array
+  }
 }
 
 /* With Control.Map */
@@ -47,26 +47,6 @@ top of the module. Otherwise, to avoid polluting the namespace, using `module V 
 </Control.IfSome>
 ```
 
-#### pure
-```reason
-/* Without pure */
-module ItemBefore = {
-  let instance = ReasonReact.statelessComponent("Item");
-  let make = (~label, _children) => {
-    ...instance,
-    render: _self =>
-      <li> (label |> text) </li>
-  }
-};
-
-/* With pure */
-module Item = {
-  let make = pure((render, ~label) => render(
-    <li> (label |> text) </li>
-  ));
-};
-```
-
 See more examples in [the examples folder](https://github.com/glennsl/vrroom/tree/master/examples)
 
 ## Documentation
@@ -77,28 +57,28 @@ Used to indicate and enforce a childless component by making it impossible to ad
 
 Example:
 ```reason
-let make = (_:childless) => ...
+let make = () => ...
 ```
 
-#### let text : string => ReasonReact.reactElement
+#### let text : string => React.element
 
-Alias for `Text.string` and therefore `ReasonReact.string`.
+Alias for `Text.string` and therefore `React.string`.
 
 Example:
 ```reason
 <div> {"Hello!" |> text} </div>
 ```
 
-#### let nothing : ReasonReact.reactElement
+#### let nothing : React.element
 
-Alias for `ReasonReact.null`.
+Alias for `React.null`.
 
 Example:
 ```reason
 <div> {isAwkward ? nothing : text("Hello!")} </div>
 ```
 
-#### let nbsp : ReasonReact.reactElement
+#### let nbsp : React.element
 
 Insert a `&nbsp;` (actually the unicode equivalent since React escapes HTML entities). Useful to avoid some elements mysteriously disappearing when empty (or more likely containing `nothing`).
 
@@ -107,49 +87,36 @@ Example:
 <div> {isAwkward ? nbsp : text("Hello!")} </div>
 ```
 
-#### let pure : (((ReasonReact.reactElement, childless) => ReasonReact.component(ReasonReact.stateless ReasonReact.noRetainedProps, ReasonReact.actionless)) => 'a) => 'a
-
-An experimental convenience function for creating a "functional" stateless component.
-
-Example:
-```reason
-modul Item = {
-  let make = pure((render, ~label) => render(
-    <li> (label |> text) </li>
-  ));
-};
-```
-
 ### module Text
 
-#### let Text.string : string => ReasonReact.reactElement
+#### let Text.string : string => React.element
 
-Alias for `ReasonReact.string`.
+Alias for `React.string`.
 
 Example:
 ```reason
 <div> {"Hello!" |> Text.string} </div>
 ```
 
-#### let Text.int : int => ReasonReact.reactElement
+#### let Text.int : int => React.element
 
-Would be an alias for `ReasonReact.intToElement` if it had existed.
+Would be an alias for `React.int` if it had existed.
 
 Example:
 ```reason
 <div> {42 |> Text.int} </div>
 ```
 
-#### let Text.float : float => ReasonReact.reactElement
+#### let Text.float : float => React.element
 
-Would be an alias for `ReasonReact.floatToElement` if it had existed.
+Would be an alias for `React.float` if it had existed.
 
 Example:
 ```reason
 <div> {4.2 |> Text.float} </div>
 ```
 
-#### let Text.any : _ => ReasonReact.reactElement
+#### let Text.any : _ => React.element
 
 Converts anything to a string, then casts it as an element.
 
@@ -187,21 +154,8 @@ Example:
 <div className=ClassName.(join(["button", maybeError |> fromOption]))> ... </div>
 ```
 
-#### &lt;Fragment&gt; array(ReasonReact.reactElement) &lt;/Fragment&gt;
 
-Binding to the standard [React Fragment](https://reactjs.org/docs/fragments.html) component. Renders its children without a surrounding DOM element.
-
-Example:
-```reason
-<tr> ... </tr>
-<Fragment>
-  <tr> ... </tr>
-  <tr> ... </tr>
-</Fragment>
-<tr> ... </tr>
-```
-
-#### <Control.Map items=array('a) ?empty=ReasonReact.reactElement> ...('a => ReasonReact.reactElement) </Control.Map>
+#### <Control.Map items=array('a) ?empty=React.element> ...('a => React.element) </Control.Map>
 
 Renders each item in `items` using the given render function, or if the array is empty, the given `empty` element or `nothing` if oomitted.
 
@@ -212,7 +166,7 @@ Example:
 </Control.Map>
 ```
 
-#### <Control.MapList items=list('a) ?empty=ReasonReact.reactElement> ...('a => ReasonReact.reactElement) </Control.MapList>
+#### <Control.MapList items=list('a) ?empty=React.element> ...('a => React.element) </Control.MapList>
 
 Renders each item in `items` using the given render function, or if the list is empty, the given `empty` element or `nothing` if oomitted.
 
@@ -223,7 +177,7 @@ Example:
 </Control.MapList>
 ```
 
-#### <Control.If cond=bool> ...(unit => ReasonReact.reactElement) </Control.If>
+#### <Control.If cond=bool> ...(unit => React.element) </Control.If>
 
 Renders the element returned by the render function if `cond` is true, otherwise `nothing`.
 
@@ -234,7 +188,7 @@ Example:
 </Control.If>
 ```
 
-#### <Control.IfSome option=option('a)> ...('a => ReasonReact.reactElement) </Control.IfSome>
+#### <Control.IfSome option=option('a)> ...('a => React.element) </Control.IfSome>
 
 Calls the render function with the contained item in `option`  if any, and renders the returned element, otherwise `nothing`.
 
